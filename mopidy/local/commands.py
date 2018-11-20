@@ -4,7 +4,6 @@ from __future__ import (
 import logging
 import os
 import time
-import sys
 
 from mopidy import commands, compat, exceptions
 from mopidy.audio import scan, tags
@@ -158,13 +157,6 @@ class ScanCommand(commands.Command):
                     logger.debug('Added %s', track.uri)
             except exceptions.ScannerError as error:
                 logger.warning('Failed %s: %s', uri, error)
-
-            # Remove the caught exception from memory. Necessary as
-            # otherwise memory usage builds up on large amount of files to
-            # update due to arising reference cycle.
-            # Only necessary in Python 2
-            # Source: https://cosmicpercolator.com/2016/01/13/exception-leaks-in-python-2-and-3/
-            sys.exc_clear()
 
             if progress.increment():
                 progress.log()
